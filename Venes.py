@@ -1,35 +1,25 @@
-import turtle
+from turtle import *
 import random
 import sys
-import tkinter
-
 
 sys.setrecursionlimit(4000)
 
+
 def getturtle():
-    root = tkinter.Tk()
-    root.tk.call('tk', 'scaling', 0.5)
-    w = tkinter.Canvas(root, width=2000, height=1000)
-    # root.geometry('2000x1500')  # added by me
-    w.pack()
-    screen = turtle.TurtleScreen(w)
-    # screen.screensize(2000, 1500)  # added by me
+    initturtle = Turtle()
+    screen = initturtle.getscreen()
+    screen.setup(width=1.0, height=1.0)
     screen.tracer(0, 0)
+    screen.title("Venes")
+
     screen.colormode(255)
-
-    initturtle = turtle.RawTurtle(screen)
-
-    initturtle.reset();
-    initturtle.pensize(4)
+    initturtle.reset()
     initturtle.setheading(90)
     initturtle.penup()
     initturtle.goto(0, -200)
 
     return initturtle
 
-def increment_green(turtle):
-    currentcolor = turtle.pencolor()
-    turtle.pencolor((int(currentcolor[0]), int(currentcolor[1] + 3) if currentcolor[1] < 250 else 250, int(currentcolor[2])))
 
 def rotate(turtle, angle, direction):
     if direction == 'left':
@@ -37,35 +27,42 @@ def rotate(turtle, angle, direction):
     elif direction == 'right':
         turtle.right(angle)
 
+
 def spiral(spiralturtle, size, direction):
-    if size < 0.1:
+    if size < 1:
         return
 
-    # rand = random.random();
-    # probability_of_branching = 0.2
-    # if (rand < probability_of_branching):
-    #     newturtle = spiralturtle.clone()
-    #
-    #     #branch
-    #     rotate(newturtle, 90, direction)
-    #     sizeofbranch = size * 0.6
-    #     spiral(newturtle, sizeofbranch, direction)
-    #
-    #     #flip for the next branch
-    #     sizeafterbranching = size * 0.9
-    #     if direction == 'left':
-    #         spiral(spiralturtle, sizeafterbranching, 'right')
-    #     elif direction == 'right':
-    #         spiral(spiralturtle, sizeafterbranching, 'left')
-    # else :
-    spiralturtle.dot(size)
+    heading = spiralturtle.heading()
+    position = spiralturtle.pos()
 
-    spiralturtle.fd(size*0.4)
+    rand = random.random()
+    probability_of_branching = 0.05
+    if rand < probability_of_branching:
+        # branch
+        rotate(spiralturtle, 90, direction)
+        sizeofbranch = size * 0.6
+        spiral(spiralturtle, sizeofbranch, direction)
 
-    # rotate(spiralturtle, 3, direction)
-    spiral(spiralturtle, size*0.99, direction)
+        spiralturtle.setheading(heading)
+        spiralturtle.setposition(position)
+
+        # flip for the next branch
+        sizeafterbranching = size * 0.9
+        if direction == 'left':
+            spiral(spiralturtle, sizeafterbranching, 'right')
+        elif direction == 'right':
+            spiral(spiralturtle, sizeafterbranching, 'left')
+    else:
+        spiralturtle.dot(size)
+        spiralturtle.fd(size * 0.4)
+
+        rotate(spiralturtle, 1, direction)
+        spiral(spiralturtle, size * 0.99, direction)
+
+    spiralturtle.setheading(heading)
+    spiralturtle.setposition(position)
 
 
 t = getturtle()
-t.dot(300)
+spiral(t, 20, 'left')
 t.getscreen().mainloop()

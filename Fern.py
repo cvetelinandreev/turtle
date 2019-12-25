@@ -30,10 +30,10 @@ def fern(size, minsize, anglefactor):
 def flower():
     for i in range(6):
         fern(300, 10, 1)
-        pencolor(i * 50 + 5, i * 30 + 5, i * 10 + 5)
+        pencolor(i * 50 + 5, i * 50 + 5, i * 30 + 5)
         right(60)
 
 
-#init()
+init()
 flower()
 done()
