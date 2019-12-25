@@ -12,7 +12,7 @@ def init(initturtle):
     screen.tracer(0, 0)
     screen.title("Tree")
 
-    colormode(255)
+    screen.colormode(255)
     initturtle.reset()
     initturtle.pensize(3)
     initturtle.pencolor((101, 67, 33))
